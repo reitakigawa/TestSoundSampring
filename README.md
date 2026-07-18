@@ -18,3 +18,9 @@ cd AutoOtoMaker
 pip install -r requirements.txt
 python main.py
 ```
+
+
+## 別パッケージ
+
+- `AutoOtoMaker/`: WhisperX長文WAVから連続音向け`oto.ini`を生成するツール。
+- `SingleOtoEditor/`: 分割済みWAVフォルダから単独音向け`oto.ini`を編集するツール。
