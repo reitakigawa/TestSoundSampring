@@ -40,6 +40,7 @@ class MainWindow(QMainWindow):
         self.table = QTableWidget(0, 8)
         self.table.setHorizontalHeaderLabels(["WAV", "エイリアス", "Offset", "固定範囲", "右ブランク", "先行発声", "オーバーラップ", "状態"])
         self.table.itemChanged.connect(self._item_changed)
+        self.table.verticalHeader().sectionDoubleClicked.connect(self.play_row)
 
         open_folder = QPushButton("フォルダ読込")
         play = QPushButton("選択WAV再生")
@@ -139,9 +140,15 @@ class MainWindow(QMainWindow):
 
     def play_selected(self) -> None:
         selected = self.selected_entry()
-        if selected is None or self.folder is None:
+        if selected is None:
             return
-        _, entry = selected
+        row, _ = selected
+        self.play_row(row)
+
+    def play_row(self, row: int) -> None:
+        if self.folder is None or row < 0 or row >= len(self.entries):
+            return
+        entry = self.entries[row]
         wav_path = self.folder / entry.wav_name
         if not wav_path.exists():
             self.status.setText(f"WAVが見つかりません: {entry.wav_name}")
